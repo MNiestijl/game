@@ -1,0 +1,72 @@
+#MapContainer {
+	height: 600px;
+	width: 100%;
+	overflow: hidden;
+	border-style: solid;
+	border-width: 5px;
+	border-color: lightgrey;
+	resize: none;
+}
+
+.tile {
+	position: absolute;
+}
+
+.hexagon {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	visibility: hidden;
+	-webkit-transform: rotate(120deg);
+	   -moz-transform: rotate(120deg);
+		-ms-transform: rotate(120deg);
+		 -o-transform: rotate(120deg);
+			transform: rotate(120deg);
+	cursor: pointer;
+}
+
+.hexagon-in1 {
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	-webkit-transform: rotate(-60deg);
+	   -moz-transform: rotate(-60deg);
+		-ms-transform: rotate(-60deg);
+		 -o-transform: rotate(-60deg);
+			transform: rotate(-60deg);
+
+}
+.hexagon-in2 {
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	visibility: visible;
+	-webkit-transform: rotate(-60deg);
+	   -moz-transform: rotate(-60deg);
+		-ms-transform: rotate(-60deg);
+		 -o-transform: rotate(-60deg);
+			transform: rotate(-60deg);
+}
+
+.blueTile {
+	background-image: url(graphics/hex_blue.png);
+}
+
+.blueTile:hover {
+	background-image: url(graphics/hex_blue_hover.png);
+}
+
+.greenTile {
+	background-image: url(graphics/hex_green.png);
+}
+
+.greenTile:hover {
+	background-image: url(graphics/hex_green_hover.png);
+}
+
+.invisibleTile {
+	visibility: hidden;
+}
+
+
