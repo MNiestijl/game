@@ -1,25 +1,27 @@
-GUI = {};
+var GUI = {};
 
-testMap = [
-	[1,1,1,1,1,1,1],
-	[1,1,2,1,1,1,1],
-	[1,2,2,2,1,1,1],
-	[1,2,2,2,2,1,1],
-	[1,2,2,2,1,1,1],
-	[1,2,2,1,1,1,1],
-	[1,1,2,2,2,1,1],
-	[1,1,2,2,1,1,1],
-	[1,2,2,1,1,1,1],
-	[1,2,1,1,1,1,1],
-	[1,1,1,1,1,1,1],
+const testMap = [
+	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],	
+	[1,1,1,1,1,1,1,2,2,2,2,2,2,1,1,1,1,1],
+	[1,1,1,1,1,1,2,2,2,2,2,2,2,2,1,1,1,1],
+	[1,1,1,1,2,2,2,2,2,2,1,2,2,2,2,2,1,1],
+	[1,1,1,2,2,2,2,2,2,2,1,1,2,2,2,2,1,1],
+	[1,2,2,2,2,2,2,2,2,2,1,1,2,2,2,1,1,1],
+	[1,2,2,2,2,2,2,2,2,2,1,1,1,2,1,1,1,1],
+	[1,1,1,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1],
+	[1,1,1,1,2,2,2,2,2,2,1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
 ]
 
-testCenter = {x:5, y:6};
+const testCenter = {x:5, y:6};
 
-GUI.TileSize = 100
+GUI.TileSize = 1000;
 
 GUI.setTileSize = function(size){
-	$(".tile").css("width", 2*size);
+	$(".tile").css("width", 1/2*Math.sqrt(3)*size);
 	$(".tile").css("height", size);
 };
 
@@ -36,7 +38,7 @@ GUI.getTileClass = function(tileType){
 
 GUI.getTileDiv = function(tileType){
 	wrapper = document.createElement("div");
-	wrapper.className = "tile"
+	wrapper.className = "tile";
 	outer1 = document.createElement("div");
 	outer1.className = "hexagon";
 	inner1 = document.createElement("div");
@@ -50,13 +52,13 @@ GUI.getTileDiv = function(tileType){
 };
 
 GUI.drawMap = function(map, center){
-	width = $("#MapContainer").width();
-	height = $("#MapContainer").height();
-	posWin = $("#MapContainer").position();
-	Mx = posWin.left + width/2;
-	My = posWin.top + height/2;
-	y = 0;
-	counter = 0;
+	const width = $("#MapContainer").width();
+	const height = $("#MapContainer").height();
+	const posWin = $("#MapContainer").position();
+	const Mx = posWin.left + width/2;
+	const My = posWin.top + height/2;
+	var y = 0;
+	var counter = 0;
 	map.forEach(row=>{
 		x = 0;
 		rowDiv = document.createElement("div");
@@ -64,17 +66,18 @@ GUI.drawMap = function(map, center){
 		$("#Map").append(rowDiv);
 		row.forEach(tileType=>{
 			tileDiv = GUI.getTileDiv(tileType);
-			tileDiv.style.left = String(Mx + GUI.TileSize*((x-center.x)-(y-y.center)/2)) + "px";
-			tileDiv.style.top = String(My + GUI.TileSize*(y-center.y)*Math.sin(Math.PI/3)) + "px";
 			// debugger;
 			if (counter%2===0){
 				rowDiv.append(tileDiv);
 				rowDiv.append(GUI.getTileDiv(0));
+				tileDiv.style.left = String(Math.floor(Mx + 0.6*GUI.TileSize*(x-center.x))) + "px";
 			}
 			else {
 				rowDiv.append(GUI.getTileDiv(0));
 				rowDiv.append(tileDiv);
+				tileDiv.style.left = String(Math.floor(Mx + 0.6*GUI.TileSize*(x-center.x + 1/2))) + "px";
 			}
+			tileDiv.style.top = String(Math.floor(My + 0.6*GUI.TileSize*(y-center.y)*Math.sin(Math.PI/3))) + "px";
 			x+=1;
 		});
 		counter+=1;
@@ -85,12 +88,20 @@ GUI.drawMap = function(map, center){
 GUI.init = function(){
 	GUI.drawMap(testMap, testCenter);
 	GUI.setTileSize(GUI.TileSize);
+	// GUI.initSlideBar(25);
 
 	$( function(){
  		$("#Map").draggable();
 	});
 };
 
+GUI.onSlideBar = function(value){
+	var element = document.getElementById("Map")
+	element.style.zoom = 4*value/100;
+};
 
-
-
+GUI.initSlideBar = function(initValue){
+	var slidebar = document.getElementById("slidebar");
+	slidebar.value=initValue;
+	GUI.onSlideBar(initValue);
+};
