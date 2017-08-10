@@ -1,0 +1,101 @@
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+
+public class ProjectManager {
+	
+	private final static String frontendDIR = "src/main/frontend";
+		
+    public static void main(String[] args) throws Exception {
+    	
+    	// initialize Server
+    	Server server = new Server();
+    	ServerConnector connector = new ServerConnector(server);
+    	connector.setPort(Settings.portServer);
+    	server.addConnector(connector);
+    	
+    	//TODO: initialize database.
+    	
+    	// static file handlers
+    	ArrayList<String> staticFiles = getAllFilesInDir(frontendDIR);
+		List<ContextHandler> staticHandlers = staticFiles.stream()
+		.map(path -> createContextHandler(path.replaceFirst("^" + frontendDIR, ""), path))
+		.collect(Collectors.toList());
+    	
+		// servlet handlers
+    	ServletContextHandler servlets = new ServletContextHandler(ServletContextHandler.SESSIONS);
+    	servlets.addServlet("AuthenticationServlet", "/authenticate/*");
+    	servlets.addServlet("NewUserServlet", "/user/new");
+    	servlets.addServlet("ModifyUserServlet", "/user/*");
+    	
+    	// add handlers
+    	HandlerList handlers = new HandlerList();
+    	for (ContextHandler h : staticHandlers) {
+    		handlers.addHandler(h);
+    	}
+    	handlers.addHandler(createContextHandler("/", frontendDIR + "/html/index.html"));
+    	handlers.addHandler(createContextHandler("/page/", frontendDIR + "/html/hello.html"));
+    	handlers.addHandler(createContextHandler("/", frontendDIR + "/html/board.html"));
+    	handlers.addHandler(servlets);
+    	handlers.addHandler(new DefaultHandler());
+    
+    	// start server
+    	server.setHandler(handlers);
+    	server.start();
+    	server.join();
+    	    	
+    }
+    
+    private static ContextHandler createContextHandler(String context, String resource){
+    	Map<String, String> split = splitPath(resource);
+    	ResourceHandler rh = new ResourceHandler();
+    	rh.setResourceBase(split.get("resourceBase"));
+    	rh.setWelcomeFiles(new String[]{ split.get("name") });
+    	
+    	ContextHandler ch = new ContextHandler(context);
+    	ch.setContextPath(context);
+    	ch.setHandler(rh);
+    	return ch;	
+    }
+    
+    private static Map<String, String> splitPath(String filePath){
+    	Map<String, String> result = new HashMap<String, String>();
+    	String resourceBase = "";
+    	String[] split = filePath.split("/");
+    	for (int i = 0; i < split.length - 1; i++) {
+			resourceBase += split[i] + "/";
+		}
+    	result.put("resourceBase", resourceBase);
+    	result.put("name", split[split.length-1]);
+    	return result;
+    	
+    }
+    
+    private static ArrayList<String> getAllFilesInDir(String path){
+    	ArrayList<String> result = new ArrayList<String>();
+    	File folder = new File(path);
+    	for (File file : folder.listFiles()) {
+    		if (file.isFile()) {
+    			result.add(path + "/" + file.getName());
+    		}
+    		else if (file.isDirectory()) {
+    			result.addAll(getAllFilesInDir(path + "/" + file.getName()));
+    		}
+    	}
+		return result;
+    	
+    }  
+}
