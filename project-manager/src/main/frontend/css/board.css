@@ -5,7 +5,7 @@
 	border-style: solid;
 	border-width: 3px;
 	border-color: grey;
-	background: url("../graphics/board_background3.png") no-repeat;
+	background: url("../../graphics/board_background3.png") no-repeat;
 	background-size: 100%;
 
 	
@@ -58,19 +58,19 @@
 }
 
 .blueTile {
-	background-image: url(../graphics/hex_blue.png);
+	background-image: url("../../graphics/hex_blue.png");
 }
 
 .blueTile:hover {
-	background-image: url(../graphics/hex_blue_hover.png);
+	background-image: url("../../graphics/hex_blue_hover.png");
 }
 
 .greenTile {
-	background-image: url(../graphics/hex_green.png);
+	background-image: url("../../graphics/hex_green.png");
 }
 
 .greenTile:hover {
-	background-image: url(../graphics/hex_green_hover.png);
+	background-image: url("../../graphics/hex_green_hover.png");
 }
 
 .invisibleTile {

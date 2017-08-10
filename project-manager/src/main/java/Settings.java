@@ -6,7 +6,7 @@ public class Settings {
 	public static String hostServer = "http://127.0.0.1";
 	
 	// DB settings
-	public static String pathDBAbsolute = "C:/Users/Milan/Documents/scripts/java/project-manager/mongoDB/data";
+	public static String pathDBAbsolute = "C:/Users/Milan Niestijl/Documents/Git/game/project-manager/mongoDB/data";
 	public static int portDB = 27017;
 	public static String hostDB = "localhost";
 	public static String dataBaseName = "testDataBase";

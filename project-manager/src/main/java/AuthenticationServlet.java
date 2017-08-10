@@ -23,6 +23,8 @@ public class AuthenticationServlet extends HttpServlet {
 	    	ObjectId objectId = new ObjectId(id);
 	    	inputDocument.put("_id", objectId);
 	    	if (Authentication.verifyLogin(objectId, inputDocument.getString("name"), inputDocument.getString("password"))) {
+	    		String token = Authentication.getToken();
+	    		System.out.println(token);
 	    		response.getWriter().println("succes!"); // TODO: send token.
 	    		response.setStatus(200);
 	    	}

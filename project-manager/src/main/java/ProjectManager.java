@@ -48,7 +48,7 @@ public class ProjectManager {
     	}
     	handlers.addHandler(createContextHandler("/", frontendDIR + "/html/index.html"));
     	handlers.addHandler(createContextHandler("/page/", frontendDIR + "/html/hello.html"));
-    	handlers.addHandler(createContextHandler("/", frontendDIR + "/html/board.html"));
+    	handlers.addHandler(createContextHandler("/board", frontendDIR + "/html/board.html"));
     	handlers.addHandler(servlets);
     	handlers.addHandler(new DefaultHandler());
     

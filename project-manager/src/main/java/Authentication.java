@@ -1,17 +1,17 @@
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.security.SecureRandom;
 import java.util.Arrays;
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-
+import java.math.BigInteger;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.bson.types.Binary;
 
 public class Authentication {
-	
+		
 	public static byte[] getEncryptedPassword(String password, byte[] salt) 
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
 	    KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, Settings.encryptionIterations, Settings.encryptionLength);
@@ -32,5 +32,10 @@ public class Authentication {
 		// TODO: return random Settings.saltLength long string.
 		return "abcddefashjkadsa".getBytes();
 	}
+	
+	public static String getToken() {
+		SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
+    }
 
 }

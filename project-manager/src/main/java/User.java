@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 
 public class User {
 
-	public static ValidUserFields fields = new ValidUserFields();	
+	public static UserFields fields = new UserFields();	
 	
 	public static Document retrieveDocument(ObjectId objectId) {
 		return DataBase.retrieveDocument("user", objectId);
